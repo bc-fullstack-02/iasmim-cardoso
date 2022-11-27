@@ -98,5 +98,3 @@ router
     })
  
 app.use('/v1', router)
- 
-app.listen(3000)

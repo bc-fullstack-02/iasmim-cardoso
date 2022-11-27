@@ -1,6 +1,0 @@
-curl -v -XPOST http://localhost:3000/posts /
- -H 'Content-Type: application/json' /
- -d '{ "id": "04684059-776c-41ce-8c38-940830c0b655", /
- "title": "hello1", "body": "hello1 world body blablabla", /
-  "create_at": "2022-11-10T10:50:10", /
- "update_at": "2022-11-10T10:50:10"}'
