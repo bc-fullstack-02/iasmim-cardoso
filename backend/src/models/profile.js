@@ -13,6 +13,14 @@ const UserSchema = new mongoose.Schema({
         type:Array,
         defalt:[]
     },
+    bio:{
+        type: String,
+        max: 50
+    },
+    city:{
+        type: String,
+        max: 50
+    }
 },
 { timestamps: true }
 );

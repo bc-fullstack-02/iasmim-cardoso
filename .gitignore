@@ -1,2 +1,6 @@
 backend/node_modules/
 .vscode/extensions.json
+backend/public/stylesheets/style.css
+backend/bin/www
+backend/src/routes/auth.js
+backend/src/routes/users.js

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/style.css">
+  <title>New Post</title>
+</head>
+<body>
+  <h1>New Post</h1>
+  <a href="/v1/posts">back</a>
+
+  <form action="/v1/posts" method="POST">
+    <label for="post[title]">Title:
+      <input type="text" name="post[title]" value="<%= post.title %>">
+    </label>
+    <label for="post[description]">description:
+      <input type="text" name="post[description]" value="<%= post.description %>">
+    </label>
+    <% errors && errors.forEach(({message}) => {  %>
+      <p><%= message %></p>
+    <% }) %>
+    
+    <input type="submit" name="submit" value="Save">
+  </form>
+
+</body>
+</html>
