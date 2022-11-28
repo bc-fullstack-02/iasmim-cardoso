@@ -1,8 +1,18 @@
-const User = require("../models/User");
+const {User} = require("../models");
 const router = require("express").Router();
 
-//update user
-router.put("/:id")
+//get all users
+router.get("/", (req, res) => {
+   const name = req.query.name;
+   const users = [];
+   if(name) {
+    users = User.find({ 'name': name });
+   } else {
+    users = User.find({}); 
+   }
+
+   res.status(200).json(users);
+})
 //delete user
 
 //get user

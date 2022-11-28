@@ -1,28 +1,25 @@
-const mongoose = require("mongoose");
+const { Schema, model} = require("mongoose");
 
-const UserSchema = new mongoose.Schema({
-    name: {
+const profileSchema = new Schema({
+    name:{
         type: String,
-        require: true
+        required: true,
+        minLength: 2
     },
-    followers: {
-        type:Array,
-        defalt:[]
+    user: {
+        required: true,
+        type: Schema.Types.ObjectId,
+        ref:'User'
     },
-    following: {
-        type:Array,
-        defalt:[]
-    },
-    bio:{
-        type: String,
-        max: 50
-    },
-    city:{
-        type: String,
-        max: 50
-    }
-},
-{ timestamps: true }
-);
+    following: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Profile'
+    }],
+    followers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Profile'
+    }]
+})
+profileSchema.index({name: 'text'})
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = model('Profile', profileSchema)

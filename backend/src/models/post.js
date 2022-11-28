@@ -1,26 +1,28 @@
-const { Schema, model } = require('mongoose')
-const Redact = require('./redact')
+const { Schema, model} = require("mongoose");
 
 const postSchema = new Schema({
-  title: {
-    type: String,
-    required: [true, 'titulo obrigatorio'],
-    minLength: [2, 'titulo no minimo 2']
-  },
-  description: {
-    type: String,
-    required: [true, 'descricao obrigatoria'],
-    validate: { // bonus track
-      validator: (val) => Redact
-        .count({ term: val })
-        .then(count => count === 0),
-      message: 'nao pode usar a palavra {VALUE}'
-    }
-  },
-  comments: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Comment'
-  }]
-}, { timestamps: true })
+    title:{
+        type: String,
+        required: true,
+        minLength: 2
+    },
+    description:{
+        type : String,
+        required: true,
+        minLength: 2
+    },
+    profile:{
+        type: Schema.Types.ObjectId,
+        ref: 'Profile'
+    },
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
+    likes:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Profile'
+    }]
+})
 
 module.exports = model('Post', postSchema)

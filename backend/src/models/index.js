@@ -8,7 +8,8 @@ const connect = mongoose.connect(
 )
 exports.Post = require('./post.js')
 exports.Comment = require('./comment.js')
-exports.Redact = require('./redact.js')
+exports.Profile = require('./profile.js')
+exports.User = require('./user.js')
 
 mongoose.connection.on('error', () => {
   console.error('Mongo not connected')
