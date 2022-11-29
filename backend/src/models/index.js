@@ -6,7 +6,7 @@ const connect = mongoose.connect(
       serverSelectionTimeoutMS: (!process.env.NODE_ENV) ? 1000 : 30000
     } // Keep trying to send operations for 5 seconds
 )
-exports.Post = require('./post.js')
+exports.Post = require('./posts.js')
 exports.Comment = require('./comment.js')
 exports.Profile = require('./profile.js')
 exports.User = require('./user.js')

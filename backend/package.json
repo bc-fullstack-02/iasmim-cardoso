@@ -8,7 +8,7 @@
     "mongo:rm": "docker rm -f mongodb",
     "mongo:seed": "node seed.js",
     "mongo:rs": "npm run mongo:rm && npm run mongo:start && npm run mongo:seed",
-    "start": "nodemon .",
+    "start": "nodemon .\\src\\index.js",
     "test": "jest"
   },
   "keywords": [],
@@ -19,18 +19,18 @@
     "cors": "^2.8.5",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
-    "express-swagger-generator": "1.1.17",
-    "helmet": "6.0.0",
     "express-ejs-generator": "^1.0.4",
     "express-session": "^1.17.3",
+    "express-swagger-generator": "1.1.17",
+    "helmet": "6.0.0",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "8.5.1",
     "method-override": "^3.0.0",
     "mongoose": "^6.3.3",
     "morgan": "^1.10.0",
+    "standard": "^17.0.0",
     "swagger-generator-express": "2.1.1",
-    "swagger-ui-dist": "4.15.5",
-    "standard": "^17.0.0"
+    "swagger-ui-dist": "4.15.5"
   },
   "devDependencies": {
     "eslint": "^8.19.0",
@@ -41,7 +41,8 @@
     "express-swagger-generator": "^1.1.17",
     "jest": "^28.1.0",
     "nodemon": "^2.0.16",
-    "supertest": "^6.2.3"
+    "supertest": "^6.2.3",
+    "typescript": "^4.9.3"
   },
   "jest": {
     "testEnvironment": "node",
