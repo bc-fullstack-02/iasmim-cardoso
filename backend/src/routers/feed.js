@@ -1,5 +1,5 @@
-const express = require('express')
-const router = express.Router()
-const { Post, Profile} = require ('../models')
+// const express = require('express')
+// const router = express.Router()
+// const { Post, Profile} = require ('../models')
 
-router.route('/')
+// router.route('/')

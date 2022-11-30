@@ -1,35 +1,20 @@
-const {User} = require("../models");
+const {User, Profile} = require("../models");
 const router = require("express").Router();
 const bcrypt = require("bcrypt")
+const UserController = require("../controller/UserController");
+
 //update user
-router.put("/:id", async(req,res)=>{
-    if(req.body.userId == req.params.id || req.body.isAdmin){
-        if(req.body.password){
-            try{
-                const salt = await bcrypt.genSalt(10);
-                req.body.password = await bcrypt.hash(req.body.password, salt);
-            }catch(err){
-                return res.status(500).json(err);
-            }
-        }
-        try{
-            const user = await User.findByIdAndUpdate(req.params.id,{
-                $set: req.body,
-            });
-            res.status(200).json("account updated")
-        }catch(err){
-            return res.status(500).json(err);
-        }
-    }else{
-        return res.status(403).json("cant update")
-    }
-});
+router.put("/:id", UserController.updateUser);
 
 //delete user
 router.delete("/:id", async(req,res)=>{
     if(req.body.userId == req.params.id || req.body.isAdmin){
         try{
-            const user = await User.findByIdAndDelete(req.params.id);
+            const user = await User.findById(req.params.id);
+
+            await User.findByIdAndDelete(req.params.id);
+            await Profile.findByIdAndDelete(user.profile);
+
             res.status(200).json({ message: "Account deleted"});
         }catch(err){
             console.log(err)
@@ -49,7 +34,7 @@ router.get("/:id", async(req,res)=>{
     }catch(err){
         res.status(500).json(err)
     }
-})
+});
 
 
 module.exports = router;
