@@ -37,6 +37,7 @@ class SecurityController {
             res.status(500).json(err)
         }
     });
+
     static loginUser = (async(req,res)=>{
         try{    
             const user = await User.findOne({user:req.body.user});
@@ -51,6 +52,7 @@ class SecurityController {
         }
 
     });
+
 
 }
 module.exports = SecurityController;

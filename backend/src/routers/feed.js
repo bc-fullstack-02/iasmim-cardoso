@@ -3,3 +3,5 @@
 // const { Post, Profile} = require ('../models')
 
 // router.route('/')
+
+//get other users posts

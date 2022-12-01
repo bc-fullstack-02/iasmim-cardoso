@@ -14,7 +14,7 @@
 
 //follow a user
 
-// router.put("/:id/follow", async(req,res) => {
+// router.post("/:id/follow", async(req,res) => {
 //     if(req.body.userId !== req.params.id){
 //         try{
 //             const user = await User.findById(req.params.id);
