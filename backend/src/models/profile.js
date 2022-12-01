@@ -20,5 +20,5 @@ const profileSchema = new Schema({
         ref: 'Profile'
     }]
 });
-
+profileSchema.index({name: 'text'})
 module.exports = model('Profile', profileSchema)

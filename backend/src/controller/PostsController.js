@@ -62,6 +62,7 @@ class PostsController {
                 res.status(200).json({message: "post has been disliked"});
             }
         }catch(err){
+            console.log(err)
             res.status(500).json(err);
         }
     });

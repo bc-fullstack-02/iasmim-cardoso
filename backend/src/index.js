@@ -8,7 +8,7 @@ app.use(express.json());
 app.use("/api/v1/users" , UserRouter);
 app.use("/api/v1/security", SecurityRouter);
 app.use("/api/v1/posts" , PostRouter);
-// app.use("/api/v1/profile", ProfileRouter);
+app.use("/api/v1/profile", ProfileRouter);
 
 
 

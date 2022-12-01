@@ -1,5 +1,5 @@
 exports.PostRouter = require('./posts.js')
 // exports.CommentsRouter = require('./comment.js')
-// exports.ProfileRouter = require('./profile.js')
+exports.ProfileRouter = require('./profile.js')
 exports.UserRouter = require('./users.js')
-exports.SecurityRouter = require('./security.js')
+exports.SecurityRouter = require('./security.js') 
