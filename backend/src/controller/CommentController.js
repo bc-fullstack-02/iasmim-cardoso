@@ -6,7 +6,6 @@ const comments = require("../models/comments");
 
 class CommentController {
     
-    //get comments of the post
 
     
     //post a comment on the post
@@ -15,7 +14,6 @@ class CommentController {
         const newComment = req.body
         newComment.post = req.params.id
         newComment.profile = req.headers.profile
-        console.log(newComment)
         try{
             const savedComment = await Comments.create(newComment);
             const currentPost = await Post.findById(savedComment.post);
@@ -26,6 +24,17 @@ class CommentController {
             res.status(500).json(err)
         }
     });
+
+        //get comments of the post
+        static getPostComments = (async(req,res)=>{
+            try{
+                const post = await Post.findById(req.params.id).populate("comments");
+                res.status(200).json(post.comments);
+            }catch(err){
+                console.log(err)
+            res.status(500).json(err)
+            }
+        });
 
     //get a comment of a post by id
     

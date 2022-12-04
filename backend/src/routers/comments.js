@@ -9,5 +9,9 @@ const CommentController = require("../controller/CommentController");
 
   router.post("/:id/comments/:commentId/like", CommentController.likeComment);
 
+  // get posts
+
+  router.get("/:id/comments/", CommentController.getPostComments);
+
 
  module.exports = router;
