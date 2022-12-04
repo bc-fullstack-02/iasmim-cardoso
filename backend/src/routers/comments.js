@@ -1,17 +1,27 @@
-const router = require ("express").Router();
+const router = require("express").Router();
 const CommentController = require("../controller/CommentController");
 
- //post a comment on the post
+// get comments
 
- router.post("/:id/comments", CommentController.commentPost);
+router.get("/:id/comments/", CommentController.getPostComments);
 
-  //like a comment by id
+//create a comment on the post
 
-  router.post("/:id/comments/:commentId/like", CommentController.likeComment);
+router.post("/:id/comments", CommentController.commentPost);
 
-  // get posts
+//update a comment
 
-  router.get("/:id/comments/", CommentController.getPostComments);
+router.put("/:id/comments/:commentId", CommentController.updateComment);
 
+//delete a comment
 
- module.exports = router;
+router.delete("/:id/comments/:commentId", CommentController.deleteComment);
+
+//get a comment of a post by id
+router.get("/:id/comments/:commentId", CommentController.getComment);
+
+//like a comment by id
+
+router.post("/:id/comments/:commentId/like", CommentController.likeComment);
+
+module.exports = router;
