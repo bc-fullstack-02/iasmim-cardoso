@@ -9,6 +9,7 @@ class PostsController {
     static createPost = (async (req,res)=>{
         const newPost = req.body
         newPost.profile = req.headers.profile
+        newPost.comments = [];
         try{
             const savedPost = await Post.create(newPost);
             

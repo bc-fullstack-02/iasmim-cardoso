@@ -7,7 +7,7 @@ const connect = mongoose.connect(
     } // Keep trying to send operations for 5 seconds
 )
 exports.Post = require('./posts.js')
-exports.Comment = require('./comment.js')
+exports.Comments = require('./comments.js')
 exports.Profile = require('./profile.js')
 exports.User = require('./user.js')
 

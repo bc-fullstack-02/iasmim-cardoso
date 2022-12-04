@@ -1,6 +1,6 @@
 const { Schema, model} = require("mongoose");
 
-const postSchema = new Schema({
+const postsSchema = new Schema({
     title:{
         type: String,
         required: true,
@@ -17,7 +17,7 @@ const postSchema = new Schema({
     },
     comments: [{
         type: Schema.Types.ObjectId,
-        ref: 'Comment'
+        ref: 'Comments'
     }],
     likes:[{
         type: Schema.Types.ObjectId,
@@ -25,4 +25,4 @@ const postSchema = new Schema({
     }]
 })
 
-module.exports = model('Post', postSchema)
+module.exports = model('Posts', postsSchema)
