@@ -1,15 +1,14 @@
-const router = require ("express").Router();
+const router = require("express").Router();
 const PostsController = require("../controller/PostsController");
-const { Post } = require("../models/");
 
 //get timeline posts
 router.get("/", PostsController.getTimelinePosts);
 //create a post
 router.post("/", PostsController.createPost);
 //update a post
-router.put("/:id",PostsController.updatePost);
+router.put("/:id", PostsController.updatePost);
 //delete a post
-router.delete("/:id",PostsController.deletePost);
+router.delete("/:id", PostsController.deletePost);
 //get a post
 router.get("/:id", PostsController.getPost);
 //like a post

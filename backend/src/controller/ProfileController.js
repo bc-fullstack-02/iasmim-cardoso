@@ -1,4 +1,3 @@
-const { json } = require("express");
 const { Profile } = require("../models");
 
 class ProfileController {
@@ -39,7 +38,7 @@ class ProfileController {
   };
 
   //follow a user
-  static folowProfile = async (req, res) => {
+  static followProfile = async (req, res) => {
     if (req.headers.profile !== req.params.id) {
       try {
         const profileToBeFollowed = await Profile.findById(req.params.id);
@@ -64,7 +63,5 @@ class ProfileController {
     }
   };
 }
-
-//follow a user
 
 module.exports = ProfileController;
