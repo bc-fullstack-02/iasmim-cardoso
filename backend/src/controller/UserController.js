@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 class UserController {
 
     static updateUser = (async (req, res) => {
-        if (req.body.userId == req.params.id || req.body.isAdmin) {
+        if (req.user) {
             if (req.body.password) {
                 try {
                     const salt = await bcrypt.genSalt(10);
@@ -15,10 +15,10 @@ class UserController {
                 }
             }
             try {
-                const user = await User.findByIdAndUpdate(req.params.id, {
+                await User.findByIdAndUpdate(req.user._id, {
                     $set: req.body,
                 });
-                res.status(200).json("account updated")
+                res.status(200).json({ message: "account updated" })
             } catch (err) {
                 console.log(err)
                 return res.status(500).json(err);
@@ -30,12 +30,10 @@ class UserController {
     });
 
     static deleteUser = (async (req, res) => {
-        if (req.body.userId == req.params.id || req.body.isAdmin) {
+        if (req.user) {
             try {
-                const user = await User.findById(req.params.id);
-
-                await User.findByIdAndDelete(req.params.id);
-                await Profile.findByIdAndDelete(user.profile);
+                await User.findByIdAndDelete(req.user._id);
+                await Profile.findByIdAndDelete(req.user.profile._id);
 
                 res.status(200).json({ message: "Account deleted" });
             } catch (err) {
@@ -44,13 +42,13 @@ class UserController {
 
             }
         } else {
-            return res.status(403).json({ message: "You can delet only your account" })
+            return res.status(403).json({ message: "You can delete only your account" })
         }
     });
 
     static getUsers = (async (req, res) => {
         try {
-            const user = await User.findById(req.params.id);
+            const user = await User.findById(req.user._id);
             const { password, updatedAt, ...other } = user._doc
             res.status(200).json(other)
         } catch (err) {
