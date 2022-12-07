@@ -7,7 +7,7 @@ class SecurityController {
     static registerUser = (async (req, res) => {
         try {
             //genarete new password
-            const salt = await bcrypt.genSalt(process.env.PASS_SECRET);
+            const salt = await bcrypt.genSalt(parseInt(process.env.PASS_SECRET));
             const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
 

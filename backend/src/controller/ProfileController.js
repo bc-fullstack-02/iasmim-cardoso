@@ -51,7 +51,8 @@ class ProfileController {
       res.status(400).json({ message: "you cant follow yourself" });
     }
   };
-  //follow a user
+
+  //unfollow a user
   static unfollowProfile = async (req, res) => {
     if (req.user.profile._id !== req.params.id) {
       try {
