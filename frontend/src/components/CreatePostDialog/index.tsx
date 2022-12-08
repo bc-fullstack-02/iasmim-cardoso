@@ -1,11 +1,17 @@
+
 import * as Dialog from "@radix-ui/react-dialog";
 import api from "../../service/api";
 import { FormEvent } from "react";
 import Button from "../Button";
 import { TextInput } from "../TextInput";
 
-function CreatePostDialog() {
+interface CreatePostDialogProps {
+  closeDialog: () => void;
+}
+
+function CreatePostDialog({closeDialog}: CreatePostDialogProps) {
   const token = localStorage.getItem("token");
+  
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
@@ -20,8 +26,10 @@ function CreatePostDialog() {
           Authorization: `Bearer ${token}`,
         },
       });
+      closeDialog();
     } catch (err) {
       console.log(err);
+      alert("Error on creating post")
     }
   }
 
