@@ -11,7 +11,7 @@ const authenticateToken = async (req, res, next) => {
   jwt.verify(token, process.env.TOKEN_SECRET, async (err, obj) => {
     if (err) return res.sendStatus(403);
 
-    req.user = await User.findById(obj.user).populate('profile');
+    req.user = await User.findById(obj._id).populate('profile');
 
     if (!req.user) {
       return res.status(404).json({ message: 'User not found' });

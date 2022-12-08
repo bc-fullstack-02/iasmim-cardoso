@@ -8,6 +8,7 @@ class PostsController {
         newPost.profile = req.user.profile._id;
         newPost.comments = [];
         try {
+            console.log(req.user)
             const savedPost = await Post.create(newPost);
 
             res.status(200).json(savedPost)

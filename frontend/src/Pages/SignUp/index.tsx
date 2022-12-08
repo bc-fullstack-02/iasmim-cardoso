@@ -1,7 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import AuthForm from "../../components/AuthForm";
+import api from "../../service/api";
 
 function SingnUp() {
- function handleRegister(user: string, password: string){
+  const navigate = useNavigate();
+
+  async function handleRegister(user: string, password: string) {
+  try { 
+    await api.post("/security/register", {
+      user,
+      password,
+    }); 
+    navigate("/")
+  }catch(err){ 
+    alert("Error creating new user.")
+  }
 
  }
   
