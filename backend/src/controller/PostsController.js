@@ -1,11 +1,11 @@
-const { Post, Profile } = require("../models");
+const { Post } = require("../models");
 
 
 class PostsController {
 
     static createPost = (async (req, res) => {
         const newPost = req.body
-        newPost.profile = req.headers.profile
+        newPost.profile = req.user.profile._id;
         newPost.comments = [];
         try {
             const savedPost = await Post.create(newPost);
@@ -52,11 +52,11 @@ class PostsController {
     static likePost = (async (req, res) => {
         try {
             const post = await Post.findById(req.params.id);
-            if (!post.likes.includes(req.headers.profile)) {
-                await post.updateOne({ $push: { likes: req.headers.profile } });
+            if (!post.likes.includes(req.user.profile._id)) {
+                await post.updateOne({ $push: { likes: req.user.profile._id } });
                 res.status(200).json({ message: "post has been liked" });
             } else {
-                await post.updateOne({ $pull: { likes: req.headers.profile } });
+                await post.updateOne({ $pull: { likes: req.user.profile._id } });
                 res.status(200).json({ message: "post has been disliked" });
             }
         } catch (err) {
@@ -77,10 +77,8 @@ class PostsController {
 
 
     static getTimelinePosts = (async (req, res) => {
-        let postArray = [];
         try {
-            const currentProfile = await Profile.findById(req.headers.profile);
-            const userPosts = await Post.find({ profile: currentProfile._id })
+            const userPosts = await Post.find({ profile: req.user.profile._id })
             res.status(200).json(userPosts);
         } catch (err) {
             console.log(err)
