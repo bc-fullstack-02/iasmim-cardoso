@@ -6,7 +6,7 @@ class CommentController {
     static commentPost = (async (req, res) => {
         const newComment = req.body
         newComment.post = req.params.id
-        newComment.profile = req.headers.profile
+        newComment.profile = req.user.profile._id;
         try {
             const savedComment = await Comments.create(newComment);
             const currentPost = await Post.findById(savedComment.post);
@@ -35,6 +35,9 @@ class CommentController {
     static getComment = (async (req, res) => {
         try {
             const comment = await Comments.findById(req.params.commentId);
+            if (!comment) {
+                return res.status(404).json({ message: "Comment not found" });
+            }
             res.status(200).json(comment);
         } catch (err) {
             console.log(err)
@@ -63,6 +66,7 @@ class CommentController {
         try {
             const comment = await Comments.findById(req.params.commentId);
             if (comment) {
+                await Post.findByIdAndUpdate({ _id: comment.post }, { $pull: { comments: comment._id } });
                 await comment.deleteOne();
                 res.status(200).json({ message: "the comment has been deleted" })
             } else {
@@ -80,11 +84,11 @@ class CommentController {
     static likeComment = (async (req, res) => {
         try {
             const comment = await Comments.findById(req.params.commentId);
-            if (!comment.likes.includes(req.headers.posts)) {
-                await comment.updateOne({ $push: { likes: req.headers.profile } });
+            if (!comment.likes.includes(req.user.profile._id)) {
+                await comment.updateOne({ $push: { likes: req.user.profile._id } });
                 res.status(200).json({ message: "comment has been liked" });
             } else {
-                await comment.updateOne({ $pull: { likes: req.headers.profile } });
+                await comment.updateOne({ $pull: { likes: req.user.profile._id } });
                 res.status(200).json({ message: "comment has been disliked" });
             }
         } catch (err) {

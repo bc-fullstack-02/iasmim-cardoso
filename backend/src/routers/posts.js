@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { CommentsRouter } = require(".");
 const PostsController = require("../controller/PostsController");
 
 //get timeline posts
@@ -13,5 +14,7 @@ router.delete("/:id", PostsController.deletePost);
 router.get("/:id", PostsController.getPost);
 //like a post
 router.post("/:id/like", PostsController.likePost);
+
+router.use('/:id/comments', CommentsRouter);
 
 module.exports = router;
