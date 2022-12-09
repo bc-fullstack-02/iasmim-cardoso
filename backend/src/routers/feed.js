@@ -1,7 +1,12 @@
-// const express = require('express')
-// const router = express.Router()
-// const { Post, Profile} = require ('../models')
+const express = require('express')
+const FeedController = require('../controller/FeedController')
+const router = express.Router()
+
 
 // router.route('/')
 
-//get other users posts
+router.get ("/", FeedController.getFeed);
+
+module.exports = router;
+
+

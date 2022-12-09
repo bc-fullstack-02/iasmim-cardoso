@@ -1,16 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import AuthForm from "../../components/AuthForm";
+import AuthForm, { Auth } from "../../components/AuthForm";
 import api from "../../service/api";
 
 function SingnUp() {
   const navigate = useNavigate();
 
-  async function handleRegister(user: string, password: string) {
+  async function handleRegister(auth: Auth) {
   try { 
-    await api.post("/security/register", {
-      user,
-      password,
-    }); 
+    await api.post("/security/register", auth); 
     navigate("/")
   }catch(err){ 
     alert("Error creating new user.")
@@ -25,6 +22,7 @@ function SingnUp() {
       submitFormButtonAction={handleRegister}
       linkDescription="Já possui conta? Entre agora!"
       routeName="/"
+      showNameInput 
     />
   );
 }

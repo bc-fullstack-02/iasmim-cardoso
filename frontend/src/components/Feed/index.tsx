@@ -1,8 +1,39 @@
+import { useState, useEffect } from "react";
+import api from "../../service/api";
 import { UserCircle, Chat, Heart } from "phosphor-react";
 import Heading from "../Heading";
 import Text from "../Text";
 
+interface Post {
+  _id: string;
+  title: string;
+  description: string;
+  profile: {
+    name: string;
+  };
+  comments: [];
+  likes: [];
+}
+
 function Feed() {
+  const token = localStorage.getItem("token");
+  const [posts, setPosts] = useState <Post | []>([]);
+
+  useEffect(() => {
+    async function getPosts() {
+      const response = await api.get("/feed", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setPosts(response.data);
+    }
+    getPosts();
+  }, []);
+
+  console.log(posts);
+
   return (
     <div>
       <Heading className="border-b border-slate-400 mt-4">
@@ -15,34 +46,30 @@ function Feed() {
         </div>
       </Heading>
       <section>
-        <div className="border-b border-slate-400">
-          <div className="flex flex-row items-center ml-5 my-4">
-            <UserCircle size={48} weight="light" className="text-slate-50" />
-            <Text className="font-extrabold ml-2">Fulano de tal</Text>
-          </div>
-          <Text asChild className="ml-16">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Error
-              fugit cum unde culpa. Pariatur rerum iste odio tenetur tempore,
-              libero laudantium, dolor perferendis eveniet perspiciatis vel,
-              dolorem nobis atque blanditiis. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Error fugit cum unde culpa. Pariatur
-              rerum iste odio tenetur tempore, libero laudantium, dolor
-              perferendis eveniet perspiciatis vel, dolorem nobis atque
-              blanditiis.
-            </p>
-          </Text>
-          <div className="flex items-center ml-16 my-4 space-x-2">
-            <Chat size={24} className="text-slate-50" />
-            <Text size="sm">9.999 </Text>
-
-            <div className="hover:bg-sky-400 rounded-full p-1">
-              <Heart size={24} className="text-slate-50" />
+        {posts.map((post) => (
+          <div className="border-b border-slate-400" key={post._id}>
+            <div className="flex flex-row items-center ml-5 my-4">
+              <UserCircle size={48} weight="light" className="text-slate-50" />
+              <Text className="font-extrabold ml-2">{post.profile.name}</Text>
             </div>
+            <div className="ml-16 flex flex-col gap-2">
+              <Heading size="sm">{post.title}</Heading>
+              <Text asChild >
+                <p>{post.description}</p>
+              </Text>
+            </div>
+            <div className="flex items-center ml-16 my-4 space-x-2">
+              <Chat size={24} className="text-slate-50" />
+              <Text size="sm">{post.comments.length}</Text>
 
-            <Text size="sm">9.999 </Text>
+              <div className="hover:bg-sky-400 rounded-full p-1">
+                <Heart size={24} className="text-slate-50" />
+              </div>
+
+              <Text size="sm">{post.likes.length}</Text>
+            </div>
           </div>
-        </div>
+        ))}
       </section>
     </div>
   );

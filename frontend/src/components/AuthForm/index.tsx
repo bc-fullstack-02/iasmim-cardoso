@@ -11,25 +11,47 @@ import { FormEvent } from "react";
 interface AuthFormProps {
   formTitle: string;
   submitFormButtonText: string;
-  submitFormButtonAction: (user: string, password: string) => void;
+  submitFormButtonAction: (auth: Auth) => void;
   linkDescription: string;
   routeName: string;
+  showNameInput?: boolean;
 }
+
+interface AuthFormElements extends HTMLFormControlsCollection {
+  user: HTMLInputElement;
+  name?: HTMLInputElement;
+  password: HTMLInputElement;
+}
+
+interface AuthFormElement extends HTMLFormElement {
+  readonly elements: AuthFormElements;
+}
+
+export interface Auth {
+  user: string;
+  name?: string;
+  password: string;
+}
+
 function AuthForm({
   formTitle,
   submitFormButtonText,
   submitFormButtonAction,
   linkDescription,
   routeName,
+  showNameInput,
 }: AuthFormProps) {
-  function handleSubmit(event: FormEvent) {
+  function handleSubmit(event: FormEvent<AuthFormElement>) {
     event.preventDefault();
-    const form = event.target as HTMLFormElement;
+    const form = event.currentTarget;
 
-    submitFormButtonAction(
-      form.elements.user.value,
-      form.elements.password.value
-    );
+    const auth = {
+      user: form.elements.user.value,
+      name: form.elements.name?.value,
+      password: form.elements.password.value,
+    };
+
+    submitFormButtonAction(auth);
   }
 
   return (
@@ -41,10 +63,26 @@ function AuthForm({
       </header>
 
       <form
-        onSubmit={(e) => handleSubmit(e)}
+        onSubmit={handleSubmit}
         className="flex-col gap-4 items-stretch w-full max-w-sm mt-10"
       >
-        <label htmlFor="user" className="flex flex-col gap-2">
+        {showNameInput && (
+          <label htmlFor="name" className="flex flex-col gap-2">
+            <Text>Nome</Text>
+            <TextInput.Root>
+              <TextInput.Icon>
+                <User />
+              </TextInput.Icon>
+              <TextInput.Input
+                id="name"
+                type="text"
+                placeholder="Digite o nome do usuario"
+              />
+            </TextInput.Root>
+          </label>
+        )}
+
+        <label htmlFor="user" className="flex flex-col gap-2 mt-2">
           <Text>Login</Text>
           <TextInput.Root>
             <TextInput.Icon>
