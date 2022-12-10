@@ -10,8 +10,8 @@ class PostsController {
         try {
             console.log(req.user)
             const savedPost = await Post.create(newPost);
-
-            res.status(200).json(savedPost)
+            req.publish('post', req.user.profile.followers, savedPost);
+            res.status(201).json(savedPost);
         } catch (err) {
             console.log(err)
             res.status(500).json(err)
@@ -55,6 +55,7 @@ class PostsController {
             const post = await Post.findById(req.params.id);
             if (!post.likes.includes(req.user.profile._id)) {
                 await post.updateOne({ $push: { likes: req.user.profile._id } });
+                req.publish('post-like', [post.profile], post);
                 res.status(200).json({ message: "post has been liked" });
             } else {
                 await post.updateOne({ $pull: { likes: req.user.profile._id } });
