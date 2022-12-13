@@ -1,6 +1,6 @@
 {
     "$schema": "./node_modules/rascal/lib/config/schema.json",
-    "vshost": {
+    "vhosts": {
         "/": {
             "publicationChannelPools": {
                 "confirmPool": {
@@ -16,9 +16,15 @@
                     "timeout": 1000
                 }
             },
-            "exchanges": ["post_ex"],
-            "queues": ["post_queue"],
-            "bindings": ["post_ex[p] -> post_queue"],
+            "exchanges": [
+                "post_ex"
+            ],
+            "queues": [
+                "post_queue"
+            ],
+            "bindings": [
+                "post_ex[p] -> post_queue"
+            ],
             "publications": {
                 "post_pub": {
                     "exchange": "post_ex",
@@ -33,7 +39,6 @@
                     "queue": "post_queue"
                 }
             }
-
         }
     }
 }

@@ -1,14 +1,12 @@
-import { useState } from "react";
-import Feed from "../../components/Feed";
 import Menu from "../../components/Menu";
+import Profile from "../../components/Profile";
 
-function Home() {
+function ProfilePage() {
   return (
     <div className="w-screen h-screen flex">
       <Menu />
-      <Feed />
+      <Profile />
     </div >
   );
 }
-
-export default Home;
+export default ProfilePage;

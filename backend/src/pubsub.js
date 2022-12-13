@@ -3,12 +3,12 @@ const defaultConfig = require('./config');
 
 defaultConfig.vhosts['/'].connection.url = process.env.AMQP_URL || defaultConfig.vhosts['/'].connection.url;
 const config = Rascal.withDefaultConfig(defaultConfig);
-const publisher = Object.keys(defaultConfig.vhosts['/'].publications[0]);
-const consumer = Object.keys(defaultConfig.vhosts['/'].subscriptions[0]);
+const publisher = Object.keys(defaultConfig.vhosts['/'].publications)[0];
+const consumer = Object.keys(defaultConfig.vhosts['/'].subscriptions)[0];
 
 module.exports = {
     pub: (req, res, next) => Rascal.Broker.create(Rascal.withDefaultConfig(config), (err, broker) => {
-        if(err) next(err);
+        if (err) next(err);
         req.publish = (type, keys, value) => new Promise((resolve, reject) => {
             const msg = {
                 type,
@@ -16,7 +16,7 @@ module.exports = {
                 keys
             };
             broker.publish(publisher, msg, (err, publication) => {
-                if(err) reject(err);
+                if (err) reject(err);
                 publication.on('error', reject);
                 resolve(value);
             });
@@ -24,24 +24,24 @@ module.exports = {
         next();
     }),
     sub: () => Promise.resolve(Rascal.withDefaultConfig(config))
-    .then((conf) => new Promise((resolve, reject) => Rascal.Broker.create(conf, (err, broker) => {
-        if(err) {
-            if(err.code === 'ECONNREFUSED') {
-                console.error(err);
-                process.exit(1);
-            } else {
-                reject(err);
+        .then((conf) => new Promise((resolve, reject) => Rascal.Broker.create(conf, (err, broker) => {
+            if (err) {
+                if (err.code === 'ECONNREFUSED') {
+                    console.error(err);
+                    process.exit(1);
+                } else {
+                    reject(err);
+                }
             }
-        }
-        resolve(broker);
-    })))
-    .then(broker => new Promise((resolve, reject) => broker.subscriber(consumer, (err, subscription) => {
-        if(err) reject(err);
-        resolve(subscription);
-    })))
-    .then(subscription => {
-        subscription.on('error', (err) => { throw err });
-        subscription.on('cancel', (err) => { throw err });
-        return subscription;
-    })
+            resolve(broker);
+        })))
+        .then(broker => new Promise((resolve, reject) => broker.subscriber(consumer, (err, subscription) => {
+            if (err) reject(err);
+            resolve(subscription);
+        })))
+        .then(subscription => {
+            subscription.on('error', (err) => { throw err });
+            subscription.on('cancel', (err) => { throw err });
+            return subscription;
+        })
 }

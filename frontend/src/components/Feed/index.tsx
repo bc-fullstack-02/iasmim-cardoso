@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../service/api";
+import { getAuthHeader } from "../../service/auth";
 import { UserCircle, Chat, Heart } from "phosphor-react";
 import Heading from "../Heading";
 import Text from "../Text";
@@ -20,18 +21,20 @@ function Feed() {
   const user = localStorage.getItem("user");
   const profile = localStorage.getItem("profile");
   const [posts, setPosts] = useState<Post[]>([]);
-  const authHearder = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  const authHearder = getAuthHeader();
 
   useEffect(() => {
     async function getPosts() {
+      const response = await api.get("/posts", authHearder);
+      setPosts(response.data);
+    }
+    async function getFeed() {
       const response = await api.get("/feed", authHearder);
       setPosts(response.data);
     }
     getPosts();
+    getFeed();
+
   }, []);
 
   async function handleLike(postId: String) {
@@ -46,8 +49,11 @@ function Feed() {
 
       setPosts((posts) => {
         const post = newPost[0];
-        const index = posts.indexOf(post);
-        posts[index] = post;
+        if (post) {
+          const index = posts.indexOf(post);
+          posts[index] = post;
+        }
+
         return [...posts];
       });
     } catch (err) {
@@ -58,7 +64,7 @@ function Feed() {
   console.log(posts);
 
   return (
-    <div>
+    <div className="basis-5/6 overflow-y-auto scroll-smooth">
       <Heading className="border-b border-slate-400 mt-4">
         <Text size="lg" className="font-extrabold ml-5">
           Página inicial
