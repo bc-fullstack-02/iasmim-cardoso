@@ -35,7 +35,7 @@ module.exports = {
             }
             resolve(broker);
         })))
-        .then(broker => new Promise((resolve, reject) => broker.subscriber(consumer, (err, subscription) => {
+        .then(broker => new Promise((resolve, reject) => broker.subscribe(consumer, (err, subscription) => {
             if (err) reject(err);
             resolve(subscription);
         })))
