@@ -8,7 +8,7 @@
     "mongo:rm": "docker rm -f mongodb",
     "mongo:seed": "node seed.js",
     "mongo:rs": "npm run mongo:rm && npm run mongo:start && npm run mongo:seed",
-    "start": "nodemon ./src/index.js",
+    "start": "nodemon src/index.js",
     "test": "jest"
   },
   "keywords": [],
@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",

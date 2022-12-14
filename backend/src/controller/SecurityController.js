@@ -13,6 +13,8 @@ class SecurityController {
       const newUser = {
         user: req.body.user,
         password: hashedPassword,
+        userPicture: req.file.path
+
       };
       //save user and response
       const savedUser = await new User(newUser).save();

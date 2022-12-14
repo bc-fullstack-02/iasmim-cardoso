@@ -1,11 +1,21 @@
 const router = require("express").Router();
 const { CommentsRouter } = require(".");
 const PostsController = require("../controller/PostsController");
+const multer = require("multer");
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, `uploads/`);
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
+const upload = multer({ storage });
 
 //get timeline posts
 router.get("/", PostsController.getTimelinePosts);
 //create a post
-router.post("/", PostsController.createPost);
+router.post("/", upload.single('file'), PostsController.createPost);
 //update a post
 router.put("/:id", PostsController.updatePost);
 //delete a post

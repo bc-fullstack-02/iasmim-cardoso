@@ -1,37 +1,23 @@
 const { Post } = require("../models");
-const multer = require('multer');
-const parser = multer({ dest: 'uploads/' });
+
 
 class PostsController {
 
     static createPost = (async (req, res) => {
-        const newPost = req.body
-        console.log(req.body)
-            parser.single('picture')(req, res, err => {
-                if (err)
-                    res.status(500).json({ error: 1, payload: err });
-                else {
-                    const image = {};
-                    image.id = req.file.filename;
-                    image.url = `/uploads/${image.id}`;
-                    newPost.image = image;
-                }
-            });
+        const newPost = req.body;
         newPost.profile = req.user.profile._id;
+        newPost.picture = req.file.path;
         newPost.comments = [];
-        
         try {
-            console.log(newPost)
+            console.log(req.user)
             const savedPost = await Post.create(newPost);
-            // req.publish('post', req.user.profile.followers, savedPost);
-            
+            req.publish('post', req.user.profile.followers, savedPost);
             res.status(201).json(savedPost);
-            
         } catch (err) {
             console.log(err)
             res.status(500).json(err)
-            
         }
+
     });
 
     static updatePost = (async (req, res) => {
@@ -70,7 +56,7 @@ class PostsController {
             const post = await Post.findById(req.params.id);
             if (!post.likes.includes(req.user.profile._id)) {
                 await post.updateOne({ $push: { likes: req.user.profile._id } });
-                // req.publish('post-like', [post.profile], post);
+                req.publish('post-like', [post.profile], post);
                 res.status(200).json({ message: "post has been liked" });
             } else {
                 await post.updateOne({ $pull: { likes: req.user.profile._id } });
