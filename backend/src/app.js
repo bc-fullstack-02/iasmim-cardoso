@@ -12,8 +12,7 @@ const path = require("path");
 
 app.use(cors());
 app.use(pubsub.pub);
-
-app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 const urlencodendMiddleware = bodyParser.urlencoded({
     extended: true
