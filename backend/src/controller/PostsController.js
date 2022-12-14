@@ -1,22 +1,37 @@
 const { Post } = require("../models");
-
+const multer = require('multer');
+const parser = multer({ dest: 'uploads/' });
 
 class PostsController {
 
     static createPost = (async (req, res) => {
         const newPost = req.body
+        console.log(req.body)
+            parser.single('picture')(req, res, err => {
+                if (err)
+                    res.status(500).json({ error: 1, payload: err });
+                else {
+                    const image = {};
+                    image.id = req.file.filename;
+                    image.url = `/uploads/${image.id}`;
+                    newPost.image = image;
+                }
+            });
         newPost.profile = req.user.profile._id;
         newPost.comments = [];
+        
         try {
-            console.log(req.user)
+            console.log(newPost)
             const savedPost = await Post.create(newPost);
             // req.publish('post', req.user.profile.followers, savedPost);
+            
             res.status(201).json(savedPost);
+            
         } catch (err) {
             console.log(err)
             res.status(500).json(err)
+            
         }
-
     });
 
     static updatePost = (async (req, res) => {
