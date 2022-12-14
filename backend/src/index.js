@@ -11,6 +11,10 @@ const socketio = require("socket.io");
 const jwt = require('jsonwebtoken');
 const { User } = require('./models');
 
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // const io = socketio(app, {
 //     cors: {
 //         origin: "*",

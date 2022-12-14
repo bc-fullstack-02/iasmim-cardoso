@@ -11,6 +11,9 @@ const postsSchema = new Schema({
         required: true,
         minLength: 2
     },
+    picture: {
+        type: String,
+    },
     profile:{
         type: Schema.Types.ObjectId,
         ref: 'Profile'

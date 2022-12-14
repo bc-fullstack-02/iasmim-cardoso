@@ -15,6 +15,8 @@ router.get("/:id", PostsController.getPost);
 //like a post
 router.post("/:id/like", PostsController.likePost);
 
+
+
 router.use('/:id/comments', CommentsRouter);
 
 module.exports = router;

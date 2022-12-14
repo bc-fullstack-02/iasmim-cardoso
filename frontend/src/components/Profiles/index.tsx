@@ -5,7 +5,7 @@ import Heading from "../Heading";
 import Text from "../Text";
 import api from '../../service/api';
 import { getAuthHeader } from '../../service/auth';
-i
+
 
 function Profiles() {
   const authHeader = getAuthHeader();
