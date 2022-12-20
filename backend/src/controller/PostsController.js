@@ -6,7 +6,12 @@ class PostsController {
     static createPost = (async (req, res) => {
         const newPost = req.body;
         newPost.profile = req.user.profile._id;
-        newPost.picture = req.file.path;
+        newPost.pictureUrl = req.file ? process.env.HOST_IMAGES + req.file.originalname: null;
+        if(newPost.pictureUrl) {
+            newPost.hasImage = true;
+            newPost.description = newPost.pictureUrl;
+        }
+
         newPost.comments = [];
         try {
             console.log(req.user)

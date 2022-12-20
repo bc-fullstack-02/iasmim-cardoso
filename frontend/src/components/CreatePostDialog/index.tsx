@@ -1,12 +1,14 @@
-
+import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import api from "../../service/api";
 import { FormEvent } from "react";
 import Button from "../Button";
 import { TextInput } from "../TextInput";
+import Dropzone from "../Dropzone";
+import { Post } from "../../Model/post";
 
 interface CreatePostDialogProps {
-  closeDialog: () => void;
+  postCreated: (post: Post) => void;
 }
 interface PostFormElements extends HTMLFormControlsCollection {
   title: HTMLInputElement;
@@ -17,27 +19,31 @@ interface PostFormElement extends HTMLFormElement {
   readonly elements: PostFormElements;
 }
 
-function CreatePostDialog({closeDialog}: CreatePostDialogProps) {
+function CreatePostDialog({ postCreated }: CreatePostDialogProps) {
   const token = localStorage.getItem("token");
-  
+  const [selectedFile, setSelectedFile] = useState<File>();
+
   async function handleSubmit(event: FormEvent<PostFormElement>) {
     event.preventDefault();
-    const form = event.currentTarget
+    const form = event.currentTarget;
 
-    const newPost = {
-      title:form.elements.title.value,
-      description:form.elements.description.value
+    const data = new FormData();
+    data.append("title", form.elements.title.value);
+    data.append("description", form.elements.description.value);
+    if (selectedFile) {
+      data.append("file", selectedFile);
     }
+
     try {
-      await api.post("/posts", newPost, {
-        headers:{
+       const response = await api.post("/posts", data, {
+        headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      closeDialog();
+      postCreated(response.data);
     } catch (err) {
       console.log(err);
-      alert("Error on creating post")
+      alert("Error on creating post");
     }
   }
 
@@ -62,6 +68,7 @@ function CreatePostDialog({closeDialog}: CreatePostDialogProps) {
               id="description"
               placeholder="Diga o que está pensando.."
             />
+            <Dropzone oneFileUploaded={setSelectedFile} />
           </div>
           <footer className="mt-6 flex justify-end gap-4">
             <Dialog.Close

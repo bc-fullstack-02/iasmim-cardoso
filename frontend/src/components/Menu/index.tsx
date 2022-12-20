@@ -6,11 +6,17 @@ import logo_menu from "../../assets/logo_menu.svg";
 import Text from "../../components/Text";
 import CreatePostButton from "../../components/CreatePostButton";
 import CreatePostDialog from "../../components/CreatePostDialog";
+import { Post } from "../../Model/post";
 
-function Menu() {
+
+interface MenuProps {
+  newPostCreated: (post: Post) => void;
+}
+function Menu(props:MenuProps) {
   const [open, setOpen] = useState(false);
-  function closeDialog() {
+  function postCreated(post: Post) {
     setOpen(false);
+    props.newPostCreated(post);
   }
   return (
     <div className="basis-1/6 border-r border-slate-400 ml-4 pt-4">
@@ -35,7 +41,7 @@ function Menu() {
         <Dialog.Root open={open} onOpenChange={setOpen}>
           <CreatePostButton />
 
-          <CreatePostDialog closeDialog={closeDialog} />
+          <CreatePostDialog postCreated={postCreated} />
         </Dialog.Root>
       </div>
     </div>

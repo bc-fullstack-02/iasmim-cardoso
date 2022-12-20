@@ -11,8 +11,12 @@ const postsSchema = new Schema({
         required: true,
         minLength: 2
     },
-    picture: {
+    pictureUrl: {
         type: String,
+    },
+    hasImage: {
+        type: Boolean,
+        default: false
     },
     profile:{
         type: Schema.Types.ObjectId,

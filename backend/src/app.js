@@ -24,7 +24,7 @@ app.use(bodyParser.json({
 app.use("/api/v1/users", authenticateToken, UserRouter);
 app.use("/api/v1/security", SecurityRouter);
 app.use("/api/v1/posts", authenticateToken, PostRouter);
-app.use("/api/v1/profile", authenticateToken, ProfileRouter);
+app.use("/api/v1/profiles", authenticateToken, ProfileRouter);
 app.use("/api/v1/feed", authenticateToken, FeedRouter);
 
 
